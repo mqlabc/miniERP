@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    订单管理
+{% endblock %}
+
+{% block header %}
+    所有订单
+{% endblock %}
+
+{% block where %}
+    订单管理
+{% endblock %}
+
+{% block content %}
+    <div class="dataTables_info" role="status" aria-live="polite" style="margin-bottom: 1rem;margin-left: 0.5rem">
+        前往<a href="/admin/order/order/" target="_blank">后台管理页面</a>增加、修改或删除订单。点击卡片内的物料可以直接修改订单的物料规格，返回刷新后生效。
+    </div>
+    <div class="col-sm-12">
+        {% for order in page_obj %}
+            <div class="card collapsed-card">
+                <div class="card-header">
+                    {#                        <h3 class="card-title" style="white-space: pre;font-size: 1rem;font-weight: bold">{{ order.order_date|ljust:"16" }}甲方：{{ order.buyer|ljust:"35" }}乙方：{{ order.seller|ljust:"46" }}<br></h3>#}
+                    <h3 class="card-title"
+                        style="white-space: pre;font-size: 1rem;font-weight: bold">
+                        <div style="width: 8rem;float: left">{{ order.order_date }}</div><div style="width: 25rem;float: left">甲方：{{ order.buyer }}</div><div style="width: 100px;float: left">乙方：{{ order.seller }}</div>
+                        <br></h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
+                                title="Collapse">
+                            <i class="fas fa-plus"></i></button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip"
+                                title="Remove">
+                            <i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    产品列表：<br>
+                    <ul>
+                        {% for mat in order.mat_set.all %}
+                            <li>
+                                <a href="/admin/material/material/{{ mat.id }}/change/">{{ mat }}</a>&emsp;{{ mat.material_num }}{{ mat.material_unit }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    此订单共价值<b>{{ order.get_sum }}</b>元，预付定金{{ order.deposit_percent }}%（{{ order.get_deposit }}元）
+                    <button type="button" class="btn bg-gradient-success" style="float:right" id="{{ order.id }}">下载合同
+                    </button>
+
+                </div>
+                <!-- /.card-footer-->
+            </div>
+        {% endfor %}
+    </div>
+
+    <br>
+    {# 分页 #}
+    <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="paginate_button page-item previous" id="example1_previous"><a
+                        href="?page={{ page_obj.previous_page_number }}"
+                        aria-controls="example1"
+                        data-dt-idx="0"
+                        tabindex="0"
+                        class="page-link">上一页</a>
+                </li>
+            {% else %}
+                <li class="paginate_button page-item previous disabled" id="example1_previous"><a href="#"
+                                                                                                  aria-controls="example1"
+                                                                                                  data-dt-idx="0"
+                                                                                                  tabindex="0"
+                                                                                                  class="page-link">上一页</a>
+                </li>
+            {% endif %}
+
+            <li class="paginate_button page-item active"><a href="{{ page_obj.number }}" aria-controls="example1"
+                                                            data-dt-idx="1"
+                                                            tabindex="0" class="page-link">{{ page_obj.number }}</a>
+            </li>
+
+            {% if page_obj.has_next %}
+                <li class="paginate_button page-item next" id="example1_next"><a
+                        href="?page={{ page_obj.next_page_number }}" aria-controls="example1"
+                        data-dt-idx="7" tabindex="0"
+                        class="page-link">下一页</a></li>
+            {% else %}
+                <li class="paginate_button page-item next disabled" id="example1_next"><a href="#"
+                                                                                          aria-controls="example1"
+                                                                                          data-dt-idx="7"
+                                                                                          tabindex="0"
+                                                                                          class="page-link">下一页</a>
+                </li>
+            {% endif %}
+
+        </ul>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $('.btn.bg-gradient-success').click(function () {
+                var id = $(this).attr("id");
+                console.log(id);
+                {#$.get("{% url 'order:download' %}",{"order_id":id},function (ret) {#}
+                {#    var path = data.path;#}
+                {#    location.href = path;#}
+                location.href = "/order/" + id;
+            }
+        )
+    </script>
+{% endblock %}

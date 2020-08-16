@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    应收账款-表格展示
+{% endblock %}
+
+{% block header %}
+    所有应收账款
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'adminlte-3.0.5/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminlte-3.0.5/plugins/toastr/toastr.min.css' %}">
+{% endblock %}
+
+{% block where %}
+    应收账款
+{% endblock %}
+
+{% block content %}
+    <div class="card col-lg-12">
+        <div class="card-header">
+            <h3 class="card-title">目前共有应收未付欠款 {{ all_debts_sum }} 元，点此查看<a href="{% url 'debt:overdue' %}">超期未收账款</a>。</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" role="grid"
+                               aria-describedby="example1_info">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
+                                    aria-label="Rendering engine: activate to sort column ascending">欠款方
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
+                                    aria-label="Browser: activate to sort column ascending">订单日期
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
+                                    aria-label="Platform(s): activate to sort column ascending">订单金额
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
+                                    aria-label="Platform(s): activate to sort column ascending">已收款金额
+                                </th>
+                                <th class="sorting_desc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
+                                    aria-label="Engine version: activate to sort column ascending"
+                                    aria-sort="descending">应收账款期限
+                                </th>
+                                <th class="sorting_desc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"
+                                    aria-label="Engine version: activate to sort column ascending"
+                                    aria-sort="descending">
+                                    更改收款状态
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                            {% for debt in debts %}
+                                <td><a href="/admin/debt/debt/{{ debt.id }}/change" target="_blank">{{ debt.order.buyer }}</a></td>
+                                <td>{{ debt.order.order_date }}</td>
+                                <td>{{ debt.order.get_sum }}</td>
+                                <td>{{ debt.alredy_cleared }}</td>
+                                <td >{{ debt.last_date }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-default toastrDefaultSuccess" id="{{ debt.id }}" content="{{ debt }}">
+                                        更改
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+{% endblock %}
+
+{% block js %}
+    <!-- Datatables -->
+    <script src="{% static 'adminlte-3.0.5/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'adminlte-3.0.5/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'adminlte-3.0.5/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'adminlte-3.0.5/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'adminlte-3.0.5/plugins/sweetalert2/sweetalert2.min.js' %}"></script>
+    <script src="{% static 'adminlte-3.0.5/plugins/toastr/toastr.min.js' %}"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+            $('.toastrDefaultSuccess').click(function() {
+                var id = $(this).attr("id");
+                var debt=$(this).attr("content");
+                {# 若urls.py中有<int:>这样的pattern，url标签也要在空格后面写上参数 #}
+                {# ajax不需要urlpattern直接写一段正常url，参数用字典传递 #}
+                $.get("{% url 'debt:change' %}",{'debt_id':id}, function(ret){
+                    console.log(ret);
+                    var stat='未收全款';
+                    {# 返回的是一个非空字符串而不是JS里的true和false #}
+                    if (ret === 'True'){
+                        stat='已收全款';
+                    }
+
+                toastr.success('已经将账款"'+debt+'"的状态改为&emsp;<font color="yellow">'+stat+'</font>&emsp;，刷新页面后更改生效');
+                });
+
+            });})
+
+    </script>
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+    "autoWidth": false,
+    });
+
+    });
+    </script>
+
+    <script>
+        $('.nav-link').each(function (i) {
+            if ($(this).attr('href') === '#') {
+                $(this).addClass('active');
+            } else {
+            }
+        });
+    </script>
+{% endblock %}

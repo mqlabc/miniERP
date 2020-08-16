@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    应收账款-图形展示
+{% endblock %}
+
+{% block header %}
+    图表展示
+{% endblock %}
+
+{% block where %}
+    应收账款-图表展示
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <!-- /.row -->
+        <!-- Main row -->
+        <div class="row">
+            <!-- Left col -->
+            <!-- Custom tabs (Charts with tabs)-->
+            <div class="card bg-gradient-light col-lg-12" style="position: relative; left: 0px; top: 0px;">
+                <div class="card-header border-0 ui-sortable-handle" style="cursor: move;">
+                    <h3 class="card-title">
+                        <i class="fas fa-th mr-1"></i>
+                        各月份所有订单金额及未收款金额
+                    </h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="butpieton" class="btn btn-sm" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body" style="display: block;">
+                    {{ bar0|safe }}
+                </div>
+                <!-- /.card-body -->
+                <!-- /.card-footer -->
+            </div>
+            {#            <section class="col-lg-6 connectedSortable ui-sortable">#}
+            {#                <div class="card bg-gradient-light" style="position: relative; left: 0px; top: 0px;">#}
+            {#                    <div class="card-header border-0 ui-sortable-handle" style="cursor: move;">#}
+            {#                        <h3 class="card-title">#}
+            {#                            <i class="fas fa-th mr-1"></i>#}
+            {#                            未付款条形图#}
+            {#                        </h3>#}
+            {##}
+            {#                        <div class="card-tools">#}
+            {#                            <button type="button" class="btn btn-sm" data-card-widget="collapse">#}
+            {#                                <i class="fas fa-minus"></i>#}
+            {#                            </button>#}
+            {#                            <button type="butpieton" class="btn btn-sm" data-card-widget="remove">#}
+            {#                                <i class="fas fa-times"></i>#}
+            {#                            </button>#}
+            {#                        </div>#}
+            {#                    </div>#}
+            {#                    <div class="card-body" style="display: block;">#}
+            {#                        {{ bar0|safe }}#}
+            {#                    </div>#}
+            {#                    <!-- /.card-body -->#}
+            {#                    <!-- /.card-footer -->#}
+            {#                </div>#}
+            {##}
+            {#            </section>#}
+
+            <div class="card col-lg-12">
+                <div class="card-header ui-sortable-handle" style="cursor: move;">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        各月份未收款饼状图
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div><!-- /.card-header -->
+
+                <div class="card-body">
+                    {{ time_line|safe }}
+                </div><!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <div class="card col-lg-12">
+                <div class="card-header ui-sortable-handle" style="cursor: move;">
+                    <h3 class="card-title">
+                        <i class="fas fa-chart-pie mr-1"></i>
+                        所有未收款饼状图
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-sm" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div><!-- /.card-header -->
+
+                <div class="card-body">
+                    {{ pie|safe }}
+                </div><!-- /.card-body -->
+            </div>
+        </div>
+        <!-- /.row (main row) -->
+    </div>
+{% endblock %}
+
+{% block js %}
+
+    <script>
+        $('.nav-link').each(function (i) {
+            if ($(this).attr('href') === '#') {
+                $(this).addClass('active');
+            } else {
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,42 @@
+body {
+    /*background-image: url('../image/MarleyBeach_ZH-CN0404372814_1920x1080.jpg');*/
+    background-image: url('https://cn.bing.com/images/search?view=detailV2&ccid=IT4EYJ47&id=3041B91BA1E64CF6C1DC6F2294B4B2AC833BB610&thid=OIP.IT4EYJ47gF2t9NwU7XhQogHaFj&mediaurl=http%3a%2f%2fwww.pptbz.com%2fpptpic%2fUploadFiles_6909%2f201105%2f2011051822535235.jpg&exph=675&expw=900&q=%e6%b5%85%e8%89%b2%e8%83%8c%e6%99%af%e5%9b%be%e7%89%87&simid=608047380374163087&selectedIndex=23');
+    background-size:100% 100%;
+}
+.form-login {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-login{
+    margin-top:80px;
+    font-weight: 400;
+}
+.form-login .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+
+}
+.form-login .form-control:focus {
+    z-index: 2;
+}
+.form-login input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.form-login input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+form a{
+    display: inline-block;
+    margin-top:25px;
+    font-size: 12px;
+    line-height: 10px;
+}
